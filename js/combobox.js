@@ -83,9 +83,18 @@
 		},
 
 		doSelect: function ($item) {
+			var previousSelectedItem;
 			if (typeof $item[0] !== 'undefined') {
+				// remove selection from old item, may result in remove and 
+				// re-addition of class if item is the same
+				previousSelectedItem = this.$element.find('li.selected:first');
+				previousSelectedItem.removeClass('selected');
+
+				// add selection to new item
 				$item.addClass('selected');
 				this.$selectedItem = $item;
+
+				// update input
 				this.$input.val(this.$selectedItem.text().trim());
 			} else {
 				this.$selectedItem = null;
@@ -162,6 +171,7 @@
 			if (item.length > 0) {
 				// select by data-attribute
 				this.selectBySelector(selector);
+				// remove previous selected if it exists
 				item.removeData('selected');
 				item.removeAttr('data-selected');
 			}
@@ -269,24 +279,31 @@
 			this.previousKeyPress = e.which;
 		},
 
-		inputchanged: function (e, extra) {
-			// skip processing for internally-generated synthetic event
-			// to avoid double processing
-			if (extra && extra.synthetic) return;
-			var val = $(e.target).val();
-			this.selectByText(val);
+		inputchanged: function (e, eventContext) {
+			// In order to avoid double `changed.fu.combobox`, check if function was fired by the input's change event by the user (with $.proxy) or another function in this control. If another function in this control was used, no `eventContext` will be passed in.
+				var val = $(e.target).val();
 
-			// find match based on input
-			// if no match, pass the input value
-			var data = this.selectedItem();
-			if (data.text.length === 0) {
-				data = {
-					text: val
-				};
+				this.selectByText(val);
+				// console.log(val);
+				// console.log('selectByText ', this.selectByText(val.toString()));
+
+				// find match based on input
+				// if no match, pass the input value
+				var data = this.selectedItem();
+				if (data.text.length === 0) {
+					data = {
+						text: val
+					};
+				}
+
+				// console.log(e, eventContext);
+
+			if (!eventContext) {
+				this.$element.trigger('changed.fu.combobox', data);
 			}
-
-			// trigger changed event
-			this.$element.trigger('changed.fu.combobox', data);
+			else {
+				this.$element.trigger('unrecognizedChanged.fu.combobox', data);
+			}
 		}
 	};
 
