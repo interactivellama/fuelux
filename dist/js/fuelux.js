@@ -1,5 +1,5 @@
 /*!
- * Fuel UX EDGE - Built 2016/05/17, 3:41:53 PM 
+ * Fuel UX EDGE - Built 2016/05/18, 7:22:27 PM 
  * Previous release: v3.15.3 
  * Copyright 2012-2016 ExactTarget
  * Licensed under the BSD-3-Clause license (https://github.com/ExactTarget/fuelux/blob/master/LICENSE)
@@ -299,9 +299,18 @@
 			},
 
 			doSelect: function( $item ) {
+				var previousSelectedItem;
 				if ( typeof $item[ 0 ] !== 'undefined' ) {
+					// remove selection from old item, may result in remove and 
+					// re-addition of class if item is the same
+					previousSelectedItem = this.$element.find( 'li.selected:first' );
+					previousSelectedItem.removeClass( 'selected' );
+
+					// add selection to new item
 					$item.addClass( 'selected' );
 					this.$selectedItem = $item;
+
+					// update input
 					this.$input.val( this.$selectedItem.text().trim() );
 				} else {
 					this.$selectedItem = null;
@@ -336,7 +345,8 @@
 					}, this.$selectedItem.data() );
 				} else {
 					data = {
-						text: this.$input.val().trim()
+						text: this.$input.val().trim(),
+						notFound: true
 					};
 				}
 
@@ -378,6 +388,7 @@
 				if ( item.length > 0 ) {
 					// select by data-attribute
 					this.selectBySelector( selector );
+					// remove previous selected if it exists
 					item.removeData( 'selected' );
 					item.removeAttr( 'data-selected' );
 				}
@@ -448,7 +459,6 @@
 					}
 
 					this.$inputGroupBtn.removeClass( 'open' );
-					this.inputchanged( e );
 				} else if ( e.which === ESC ) {
 					e.preventDefault();
 					this.clearSelection();
@@ -485,11 +495,9 @@
 				this.previousKeyPress = e.which;
 			},
 
-			inputchanged: function( e, extra ) {
-				// skip processing for internally-generated synthetic event
-				// to avoid double processing
-				if ( extra && extra.synthetic ) return;
+			inputchanged: function( e, eventData ) {
 				var val = $( e.target ).val();
+
 				this.selectByText( val );
 
 				// find match based on input
@@ -501,8 +509,10 @@
 					};
 				}
 
-				// trigger changed event
-				this.$element.trigger( 'changed.fu.combobox', data );
+				// data will contain a `notFound:true` if the input does not match an item in the list
+				if ( typeof eventData === 'undefined' || !eventData.synthetic ) {
+					this.$element.trigger( 'changed.fu.combobox', data );
+				}
 			}
 		};
 
@@ -5252,8 +5262,7 @@
 			} );
 			this.$prevBtn.on( 'click.fu.repeater', $.proxy( this.previous, this ) );
 			this.$primaryPaging.find( '.combobox' ).on( 'changed.fu.combobox', function( evt, data ) {
-				self.$element.trigger( 'pageChanged.fu.repeater', [ data.text, data ] );
-				self.pageInputChange( data.text );
+				self.pageInputChange( data.text, data );
 			} );
 			this.$search.on( 'searched.fu.search cleared.fu.search', function( e, value ) {
 				self.$element.trigger( 'searchChanged.fu.repeater', value );
@@ -5629,13 +5638,16 @@
 				} );
 			},
 
-			pageInputChange: function( val ) {
+			pageInputChange: function( val, data ) {
 				var pageInc;
 				if ( val !== this.lastPageInput ) {
 					this.lastPageInput = val;
 					val = parseInt( val, 10 ) - 1;
 					pageInc = val - this.currentPage;
-					this.$element.trigger( 'pageChanged.fu.repeater', val );
+					this.$element.trigger( 'pageChanged.fu.repeater', {
+						value: val,
+						data: data
+					} );
 					this.render( {
 						pageIncrement: pageInc
 					} );
