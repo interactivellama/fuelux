@@ -478,7 +478,7 @@
 				this.lastPageInput = val;
 				val = parseInt(val, 10) - 1;
 				pageInc = val - this.currentPage;
-				this.$element.trigger('pageChanged.fu.repeater', [val, data]);
+				this.$element.trigger('pageChanged.fu.repeater', {value: val, data: data});
 				this.render({
 					pageIncrement: pageInc
 				});
