@@ -129,7 +129,8 @@
 				}, this.$selectedItem.data());
 			} else {
 				data = {
-					text: this.$input.val().trim()
+					text: this.$input.val().trim(),
+					notFound: true
 				};
 			}
 
@@ -242,7 +243,6 @@
 				}
 
 				this.$inputGroupBtn.removeClass('open');
-				this.inputchanged(e);
 			} else if (e.which === ESC) {
 				e.preventDefault();
 				this.clearSelection();
@@ -279,13 +279,10 @@
 			this.previousKeyPress = e.which;
 		},
 
-		inputchanged: function (e, eventContext) {
-			// In order to avoid double `changed.fu.combobox`, check if function was fired by the input's change event by the user (with $.proxy) or another function in this control. If another function in this control was used, no `eventContext` will be passed in.
+		inputchanged: function (e, eventData) {
 				var val = $(e.target).val();
 
 				this.selectByText(val);
-				// console.log(val);
-				// console.log('selectByText ', this.selectByText(val.toString()));
 
 				// find match based on input
 				// if no match, pass the input value
@@ -296,14 +293,10 @@
 					};
 				}
 
-				// console.log(e, eventContext);
-
-			if (!eventContext) {
-				this.$element.trigger('changed.fu.combobox', data);
-			}
-			else {
-				this.$element.trigger('unrecognizedChanged.fu.combobox', data);
-			}
+				// data will contain a `notFound:true` if the input does not match an item in the list
+				if (typeof eventData === 'undefined' || !eventData.synthetic) {
+					this.$element.trigger('changed.fu.combobox', data);
+				}
 		}
 	};
 
