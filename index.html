@@ -19,6 +19,7 @@
 	<link href="index.css" rel="stylesheet" type="text/css">
 	<!-- <link href="http://www.fuelcdn.com/fuelux-mctheme/1.4.0/css/fuelux-mctheme.css" rel="stylesheet" type="text/css" /> -->
 
+
 	<script src="bower_components/requirejs/require.js"></script>
 	<script type="text/javascript">
 		(function () {
@@ -1253,18 +1254,19 @@
 			<section id="repeater-actions">
 				<h2>Repeater w/ actions enabled</h2>
 				<div class="thin-box">
-					<div class="repeater" data-staticheight="400" id="myRepeaterActions">
+
+
+					<div class="repeater" id="myRepeaterActions" data-staticheight="400">
 						<div class="repeater-header">
 							<div class="repeater-header-left">
-								<span class="repeater-title">Awesome Repeater w/ Actions!</span>
 								<div class="repeater-search">
 									<div class="search input-group">
-										<input type="search" class="form-control" placeholder="Search" />
+										<input type="search" class="form-control" placeholder="Search">
 										<span class="input-group-btn">
-										<button class="btn btn-default" type="button">
-											<span class="glyphicon glyphicon-search"></span>
-											<span class="sr-only">Search</span>
-										</button>
+										  <button class="btn btn-default" type="button">
+											  <span class="glyphicon glyphicon-search"></span>
+											  <span class="sr-only">Search</span>
+										  </button>
 										</span>
 									</div>
 								</div>
@@ -1272,30 +1274,24 @@
 							<div class="repeater-header-right">
 								<div class="btn-group selectlist repeater-filters" data-resize="auto">
 									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-										<span class="selected-label">&nbsp;</span>
+										<span class="selected-label">&#xA0;</span>
 										<span class="caret"></span>
 										<span class="sr-only">Toggle Filters</span>
 									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li data-value="all" data-selected="true"><a href="#">All</a>
-										</li>
-										<li data-value="some"><a href="#">Some</a>
-										</li>
-										<li data-value="others"><a href="#">Others</a>
-										</li>
+									<ul class="dropdown-menu pull-right" role="menu">
+										<li data-value="all" data-selected="true" data-property="all"><a href="#">All Items</a></li>
+										<li class="divider"></li>
+										<li role="presentation" class="dropdown-header text-uppercase">Status</li>
+										<li data-value="draft" data-property="status"><a href="#">Draft</a></li>
+										<li data-value="archived" data-property="status"><a href="#">Archived</a></li>
+										<li data-value="test" data-property="status"><a href="#">Test</a></li>
+										<li class="divider"></li>
+										<li role="presentation" class="dropdown-header text-uppercase">Category</li>
+										<li data-value="category1" data-property="category"><a href="#">Category 1</a></li>
+										<li data-value="category2" data-property="category"><a href="#">Category 2</a></li>
+										<li data-value="category3" data-property="category"><a href="#">Category 3</a></li>
 									</ul>
-									<input class="hidden hidden-field" name="filterSelection" readonly="readonly" aria-hidden="true" type="text" />
-								</div>
-								<div class="btn-group repeater-views" data-toggle="buttons">
-									<label class="btn btn-default active">
-										<input name="repeaterViews" type="radio" value="list.list"><span class="glyphicon glyphicon-list"></span>
-									</label>
-									<label class="btn btn-default">
-										<input name="repeaterViews" type="radio" value="thumbnail"><span class="glyphicon glyphicon-th"></span>
-									</label>
-									<label class="btn btn-default">
-										<input name="repeaterViews" type="radio" value="list.frozen"><span class="glyphicon glyphicon-list"></span>
-									</label>
+									<input class="hidden hidden-field" name="filterSelection" readonly="readonly" aria-hidden="true" type="text">
 								</div>
 							</div>
 						</div>
@@ -1307,23 +1303,18 @@
 							<div class="repeater-footer-left">
 								<div class="repeater-itemization">
 									<span><span class="repeater-start"></span> - <span class="repeater-end"></span> of <span class="repeater-count"></span> items</span>
-									<div class="btn-group selectlist" data-resize="auto">
+									<div class="btn-group selectlist dropup" data-resize="auto">
 										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-											<span class="selected-label">&nbsp;</span>
+											<span class="selected-label">&#xA0;</span>
 											<span class="caret"></span>
 											<span class="sr-only">Toggle Dropdown</span>
 										</button>
 										<ul class="dropdown-menu" role="menu">
-											<li data-value="5"><a href="#">5</a>
-											</li>
-											<li data-value="10" data-selected="true"><a href="#">10</a>
-											</li>
-											<li data-value="20"><a href="#">20</a>
-											</li>
-											<li data-value="50"><a href="#">50</a>
-											</li>
+											<li data-value="5"><a href="#">5</a></li>
+											<li data-value="10" data-selected="true"><a href="#">10</a></li>
+											<li data-value="20"><a href="#">20</a></li>
 										</ul>
-										<input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text" />
+										<input class="hidden hidden-field" name="itemsPerPage" readonly="readonly" aria-hidden="true" type="text">
 									</div>
 									<span>Per Page</span>
 								</div>
@@ -1334,10 +1325,10 @@
 										<span class="glyphicon glyphicon-chevron-left"></span>
 										<span class="sr-only">Previous Page</span>
 									</button>
-									<label id="myPageLabel2" class="page-label">Page</label>
+									<label class="page-label" id="myPageLabel">Page</label>
 									<div class="repeater-primaryPaging active">
-										<div class="input-group input-append dropdown combobox">
-											<input type="text" class="form-control" aria-labelledby="myPageLabel2">
+										<div class="input-group input-append dropdown combobox dropup">
+											<input type="text" class="form-control" aria-labelledby="myPageLabel">
 											<div class="input-group-btn">
 												<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 													<span class="caret"></span>
@@ -1347,7 +1338,7 @@
 											</div>
 										</div>
 									</div>
-									<input type="text" class="form-control repeater-secondaryPaging" aria-labelledby="myPageLabel2">
+									<input type="text" class="form-control repeater-secondaryPaging" aria-labelledby="myPageLabel">
 									<span>of <span class="repeater-pages"></span></span>
 									<button type="button" class="btn btn-default btn-sm repeater-next">
 										<span class="glyphicon glyphicon-chevron-right"></span>
@@ -1357,6 +1348,8 @@
 							</div>
 						</div>
 					</div>
+
+
 				</div>
 				<div class="btn-panel">
 					<button type="button" class="btn btn-default" id="btnRepeaterLogValue">log value</button>
